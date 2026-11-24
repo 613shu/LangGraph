@@ -1,0 +1,11 @@
+langgraph
+langchain
+langchain-google-genai
+langsmith
+langgraph-checkpoint-sqlite
+google-api-python-client
+google-auth-oauthlib
+streamlit
+pandas
+pytest
+truststore

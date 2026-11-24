@@ -1,0 +1,13 @@
+# secrets
+credentials.json
+token.json
+.env
+# local state
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+# python / IDE
+__pycache__/
+.pytest_cache/
+.venv/
+.idea/
