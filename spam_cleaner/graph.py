@@ -9,9 +9,9 @@ RECURSION_LIMIT = 1000   # each round = 4 steps; the first run may hold hundreds
 
 
 def _is_rate_limit(exc: Exception) -> bool:
-    """Retry only on Gemini quota errors (HTTP 429 / RESOURCE_EXHAUSTED)."""
+    """Retry on Gemini quota (429) and temporary overload (503 / UNAVAILABLE) errors."""
     text = str(exc)
-    return "429" in text or "RESOURCE_EXHAUSTED" in text
+    return any(code in text for code in ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE"))
 
 
 # ---------- 4.1 build_graph ----------
@@ -22,7 +22,7 @@ def build_graph(checkpointer):
 
     builder.add_node("fetch", fetch)
     builder.add_node("classify", classify,
-                     retry_policy=RetryPolicy(max_attempts=4, initial_interval=5.0,
+                     retry_policy=RetryPolicy(max_attempts=6, initial_interval=5.0,
                                               retry_on=_is_rate_limit))
     builder.add_node("review", review)
     builder.add_node("execute", execute)
